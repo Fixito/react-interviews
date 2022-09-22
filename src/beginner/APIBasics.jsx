@@ -27,7 +27,7 @@ const APIBasics = () => {
 
   return (
     <>
-      <h2>API</h2>
+      <h3>API</h3>
       <pre>{user && JSON.stringify(user, null, 2)}</pre>
       {people.map((person, index) => {
         const {
