@@ -57,4 +57,18 @@ const url = 'https://randomuser.me/api/?results=20';
 ```
 
 3. Réaliser une fonction qui permet de trier le tableau dans l'ordre croissant et décroissant selon l'en-tête sur lequel on clique
+
+[Array.prototype.sort()](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
+
+```JS
+function compare(a, b) {
+  if (a est inférieur à b selon les critères de tri)
+     return -1;
+  if (a est supérieur à b selon les critères de tri)
+     return 1;
+  // a doit être égal à b
+  return 0;
+}
+```
+
 4. Ajouter un `input` de recherche qui affiche toutes les lignes qui inclus sa valeur peu importe la colonne
