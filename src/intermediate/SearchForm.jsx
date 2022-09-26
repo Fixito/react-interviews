@@ -1,20 +1,11 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-
-const SearchForm = ({ people, setPeople }) => {
-  const [input, setInput] = useState('');
-  const searchInput = useRef(null);
-
-  const searchPeople = () => {
-    setInput(searchInput.current.value);
-  };
-
+const SearchForm = ({ input, setInput }) => {
   return (
     <form>
       <input
         type='text'
         placeholder='Rechercher...'
-        ref={searchInput}
-        onChange={searchPeople}
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
       />
     </form>
   );
