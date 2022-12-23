@@ -45,7 +45,7 @@ const url = 'https://randomuser.me/api/?results=20';
 ```
 
 1. Récupérer les données.
-2. Afficher les données situées dans la propriété `location` sous forme d'un tableau
+2. Afficher les données ( `city`, `country`, `postcode`, `state`, `coordinates`, `street`, `timezone`) situées dans la propriété `location` sous forme d'un tableau
 
 ```HTML
 <table>
