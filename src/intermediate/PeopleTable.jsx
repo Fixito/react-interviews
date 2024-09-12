@@ -1,4 +1,8 @@
+import { useState } from 'react';
+
 const PeopleTable = ({ setPeople, input, headers, people }) => {
+  const [order, setOrder] = useState(null);
+
   const sortHeader = (header) => {
     const newPeople = [...people];
 
@@ -9,26 +13,24 @@ const PeopleTable = ({ setPeople, input, headers, people }) => {
       return headerA < headerB ? -1 : headerA > headerB ? 1 : 0;
     });
 
-    if (JSON.stringify(people) === JSON.stringify(newPeople)) {
-      newPeople.sort((a, b) => {
-        const headerA = a[header];
-        const headerB = b[header];
-
-        return headerA > headerB ? -1 : headerA < headerB ? 1 : 0;
-      });
+    if (order === header) {
+      newPeople.reverse();
+      setOrder(null);
+    } else {
+      setOrder(header);
     }
 
     setPeople(newPeople);
   };
 
   const getFilteredRows = (rows, filterKey) => {
-    const filteredRows = rows.filter((row) =>
+    return rows.filter((row) =>
       Object.values(row).some((s) => {
-        return ('' + s).toLowerCase().includes(filterKey);
+        return ('' + s)
+          .toLowerCase()
+          .includes(filterKey.toLowerCase());
       })
     );
-
-    return filteredRows;
   };
 
   return (
@@ -46,13 +48,13 @@ const PeopleTable = ({ setPeople, input, headers, people }) => {
         {getFilteredRows(people, input).map((person, index) => {
           return (
             <tr key={index}>
-              {headers.map((header, i) => {
-                if (header === 'timezone') {
-                  return <td key={i}>{person[header].description}</td>;
-                }
-
-                return <td key={i}>{person[header]}</td>;
-              })}
+              {headers.map((header, i) =>
+                header === 'timezone' ? (
+                  <td key={i}>{person[header].description}</td>
+                ) : (
+                  <td key={i}>{person[header]}</td>
+                )
+              )}
             </tr>
           );
         })}
