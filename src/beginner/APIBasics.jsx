@@ -4,46 +4,62 @@ import axios from 'axios';
 const url = 'https://randomuser.me/api?page=';
 
 const APIBasics = () => {
-  const [user, setUser] = useState('');
+  // const [user, setUser] = useState('');
   const [people, setPeople] = useState([]);
   const [pageIndex, setPageIndex] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   const fetchRandomUser = useCallback(async () => {
+    setIsLoading(true);
+
     try {
       const {
-        data: { results }
+        data: { results },
       } = await axios(`${url}${pageIndex}`);
       const user = results[0];
-      setUser(user);
-      setPeople((people) => [...people, user]);
+      setPeople((PrevPeople) => [...PrevPeople, user]);
+      setIsError(false);
     } catch (error) {
       console.log(error);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
   }, [pageIndex]);
 
   useEffect(() => {
     fetchRandomUser();
-  }, [pageIndex, fetchRandomUser]);
+  }, [fetchRandomUser]);
 
   return (
     <>
       <h3>API</h3>
-      <pre>{user && JSON.stringify(user, null, 2)}</pre>
-      {people.map((person, index) => {
-        const {
-          name: { first: name },
-          picture: { thumbnail: img }
-        } = person;
+      {/* <pre>{user && JSON.stringify(user, null, 2)}</pre> */}
+      {isError && <p>Une erreur s&apos;est produite...</p>}
+      {!isLoading ? (
+        people.map((person) => {
+          const {
+            name: { first: name },
+            picture: { thumbnail: img },
+            login: { uuid },
+          } = person;
 
-        return (
-          <div key={index}>
-            <img src={img} alt={name} />
-            <p>{name}</p>
-          </div>
-        );
-      })}
-      <button onClick={() => setPageIndex(pageIndex + 1)}>
-        Charger plus d'utilisateurs
+          return (
+            <div key={uuid}>
+              <img src={img} alt={name} />
+              <p>{name}</p>
+            </div>
+          );
+        })
+      ) : (
+        <div>Chargement...</div>
+      )}
+      <button
+        onClick={() => setPageIndex(pageIndex + 1)}
+        disabled={isLoading}
+      >
+        Charger plus d&apos;utilisateurs
       </button>
     </>
   );
